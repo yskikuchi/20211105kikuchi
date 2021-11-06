@@ -29,7 +29,8 @@ export default {
   },
   data(){
     return {
-      fav:null
+      fav:null,
+      doneGood:0,
     }
   },
   computed:{
@@ -50,6 +51,10 @@ export default {
       this.$store.dispatch('deletePosts', id);
     },
     async good(post_id, user_id){
+      if(this.doneGood === 1){
+        return;
+      }
+      this.doneGood = 1;
       const sendData={
         post_id:post_id,
         user_id:user_id
@@ -63,6 +68,7 @@ export default {
         await this.$axios.post("http://127.0.0.1:8000/api/favorite", sendData);
       }
       this.$store.dispatch('getFavorites');
+      this.doneGood = 0;
     },
   }
 }
